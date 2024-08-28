@@ -1,0 +1,621 @@
+{
+	"info": {
+		"_postman_id": "fe547bf1-9608-4b4c-8dfc-d49a7ec2a7b2",
+		"name": "phpwind实战接口",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1、访问phpwind论坛首页接口",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 正则表达式提取器\r",
+							"// res = responseBody.match(new RegExp('<input type=\"hidden\" name=\"csrf_token\" value=\"(.*?)\"/>'))\r",
+							"// pm.globals.set(\"csrf_token\", res[1]);\r",
+							"// cookies 提取器\r",
+							"var csrf_token = pm.cookies.get(\"csrf_token\");\r",
+							"pm.globals.set(\"csrf_token\", csrf_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/phpwind",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2、登录接口",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// console.log(responseBody.match(new RegExp('\"referer\":\"http%3A%2F%2F47.107.116.139%2Fphpwind%2Findex.php%3Fm%3Du%26c%3Dlogin%26a%3Dwelcome%26_statu%3D(.*?)\"'))[1])\r",
+							"\r",
+							"// _statu提取器\r",
+							"_statu = responseBody.match(new RegExp('\"referer\":\"http%3A%2F%2F47.107.116.139%2Fphpwind%2Findex.php%3Fm%3Du%26c%3Dlogin%26a%3Dwelcome%26_statu%3D(.*?)\"'))[1]\r",
+							"pm.globals.set(\"_statu\", _statu)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/javascript, /; q=0.01",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "hco",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "csrf_token",
+							"value": "{{csrf_token}}",
+							"type": "text"
+						},
+						{
+							"key": "backurl",
+							"value": "http://47.107.116.139/phpwind/",
+							"type": "text"
+						},
+						{
+							"key": "invite",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://47.107.116.139/phpwind/index.php?m=u&c=login&a=dorun",
+					"protocol": "http",
+					"host": [
+						"47",
+						"107",
+						"116",
+						"139"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "m",
+							"value": "u"
+						},
+						{
+							"key": "c",
+							"value": "login"
+						},
+						{
+							"key": "a",
+							"value": "dorun"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3、登录成功后跳转接口",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://{{url}}/phpwind/index.php?m=u&c=login&a=welcome&_statu={{_statu}}",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "m",
+							"value": "u"
+						},
+						{
+							"key": "c",
+							"value": "login"
+						},
+						{
+							"key": "a",
+							"value": "welcome"
+						},
+						{
+							"key": "_statu",
+							"value": "{{_statu}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4、点击版块接口",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/phpwind/index.php?m=bbs&c=forumlist",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "m",
+							"value": "bbs"
+						},
+						{
+							"key": "c",
+							"value": "forumlist"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5、点击新板块，进入新板块接口",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/phpwind/index.php?c=thread&fid={{fid}}",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "thread"
+						},
+						{
+							"key": "fid",
+							"value": "{{fid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6、点击发帖，进入发帖接口",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/phpwind/index.php?c=post&fid={{fid}}",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "post"
+						},
+						{
+							"key": "fid",
+							"value": "{{fid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7、发布帖子接口",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"tid\", responseBody.match(new RegExp('tid%3D(.*?)%26fid%3D2'))[1])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/javascript, */*; q=0.01",
+						"type": "text"
+					},
+					{
+						"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+						"key": "Content-Type",
+						"value": "text/html; charset=UTF-8",
+						"type": "text"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive",
+						"type": "text"
+					},
+					{
+						"key": "X-Powered-By",
+						"value": "PHP/5.6.36",
+						"type": "text"
+					},
+					{
+						"key": "Set-Cookie",
+						"value": "W2S_lastvisit=4996%091724664609%09%2Fphpwind%2Findex.php%3Fc%3Dpost%26a%3Ddoadd%26_json%3D1%26fid%3D2; expires=Tue, 26-Aug-2025 09:30:09 GMT; Max-Age=31536000; path=/",
+						"type": "text"
+					},
+					{
+						"key": "Set-Cookie",
+						"value": "_ac_59d9c055=1; expires=Mon, 26-Aug-2024 10:30:09 GMT; Max-Age=3600",
+						"type": "text"
+					},
+					{
+						"key": "Vary",
+						"value": "Accept-Encoding",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "atc_content",
+							"value": "12332424{{$timestamp}}",
+							"type": "text"
+						},
+						{
+							"key": "atc_title",
+							"value": "发布帖子测试接口{{$randomInt}}",
+							"type": "text"
+						},
+						{
+							"key": "csrf_token",
+							"value": "{{csrf_token}}",
+							"type": "text"
+						},
+						{
+							"key": "pid",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "reply_notice",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "special",
+							"value": "default",
+							"type": "text"
+						},
+						{
+							"key": "tid",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{url}}/phpwind/index.php?c=post&a=doadd&_json=1&fid={{fid}}",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "post"
+						},
+						{
+							"key": "a",
+							"value": "doadd"
+						},
+						{
+							"key": "_json",
+							"value": "1"
+						},
+						{
+							"key": "fid",
+							"value": "{{fid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8、跳转帖子内容详情页接口",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/phpwind/read.php?tid={{tid}}&fid={{fid}}",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"read.php"
+					],
+					"query": [
+						{
+							"key": "tid",
+							"value": "{{tid}}"
+						},
+						{
+							"key": "fid",
+							"value": "{{fid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9、进入回复帖子接口",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/phpwind/index.php?c=post&a=reply&tid={{tid}}",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "post"
+						},
+						{
+							"key": "a",
+							"value": "reply"
+						},
+						{
+							"key": "tid",
+							"value": "{{tid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10、回复帖子完成跳转接口",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "atc_title",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "atc_content",
+							"value": "你真牛啊{{$randomInt}}",
+							"type": "text"
+						},
+						{
+							"key": "pid",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "tid",
+							"value": "{{tid}}",
+							"type": "text"
+						},
+						{
+							"key": "speical",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "reply_notice",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "csrf_token",
+							"value": "{{csrf_token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{url}}/phpwind/index.php?c=post&a=doreply&_json=1&fid={{fid}}",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "post"
+						},
+						{
+							"key": "a",
+							"value": "doreply"
+						},
+						{
+							"key": "_json",
+							"value": "1"
+						},
+						{
+							"key": "fid",
+							"value": "{{fid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11、帖子内容界面回复接口（不跳转）",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "csrf_token",
+							"value": "{{csrf_token}}",
+							"type": "text"
+						},
+						{
+							"key": "atc_content",
+							"value": "2024年8月27日{{$randomInt}}",
+							"type": "text"
+						},
+						{
+							"key": "tid",
+							"value": "{{tid}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{url}}/phpwind/index.php?c=post&a=doreply&_getHtml=1 ",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "c",
+							"value": "post"
+						},
+						{
+							"key": "a",
+							"value": "doreply"
+						},
+						{
+							"key": "_getHtml",
+							"value": "1 "
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12、退出登录接口",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/phpwind/index.php?m=u&c=login&a=logout",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"phpwind",
+						"index.php"
+					],
+					"query": [
+						{
+							"key": "m",
+							"value": "u"
+						},
+						{
+							"key": "c",
+							"value": "login"
+						},
+						{
+							"key": "a",
+							"value": "logout"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
